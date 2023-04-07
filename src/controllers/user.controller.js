@@ -10,6 +10,14 @@ const newUser = async (req, res) => {
   res.status(201).json({ token: result.message });
 };
 
+const getUsers = async (req, res) => {
+  const { currentUser } = req;
+  const result = await userService.getUsers();
+  console.log(currentUser);
+  res.status(200).json(result.message);
+};
+
 module.exports = {
   newUser,
+  getUsers,
 };

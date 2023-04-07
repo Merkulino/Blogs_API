@@ -6,13 +6,19 @@ const newUser = async ({ displayName, email, password, image }) => {
   const error = await validExistUser(email);
   if (error.type) return error;
 
-  await User.create({ displayName, email, password, image });
+  const user = await User.create({ displayName, email, password, image });
   
-  const token = generateToken({ displayName, email, image });
+  const token = generateToken({ id: user.id, displayName, email, image });
 
   return { type: null, message: token };
 };
 
+const getUsers = async () => {
+  const users = await User.findAll({ attributes: { exclude: ['password'] } });
+  return { type: null, message: users };
+};
+
 module.exports = {
   newUser,
+  getUsers,
 };

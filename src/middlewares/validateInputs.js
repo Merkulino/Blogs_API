@@ -1,3 +1,4 @@
+const { verifyToken } = require('../auth/token');
 const { loginInputs, newUserInputs } = require('./joi');
 
 const validateLoginInput = (req, res, next) => {
@@ -15,7 +16,19 @@ const validateNewUserInputs = (req, res, next) => {
   next();
 };
 
+const validateToken = (req, res, next) => {
+  const { authorization } = req.headers;
+  if (!authorization) return res.status(401).json({ message: 'Token not found' });
+
+  const { id } = verifyToken(authorization);
+  if (id === undefined) return res.status(401).json({ message: 'Expired or invalid token' });
+
+  req.currentUser = id;
+  next();
+};
+
 module.exports = {
   validateLoginInput,
   validateNewUserInputs,
+  validateToken,
 };
