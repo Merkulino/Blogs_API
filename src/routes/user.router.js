@@ -1,9 +1,9 @@
 const express = require('express');
+const { userController } = require('../controllers');
+const { validateNewUserInputs } = require('../middlewares/validateInputs');
 
 const route = express.Router();
 
-route.get('/', (req, res) => {
-  res.status(200).json({ message: 'user it works!' });
-});
+route.post('/', validateNewUserInputs, userController.newUser);
 
 module.exports = route;
