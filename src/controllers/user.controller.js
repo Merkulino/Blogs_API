@@ -11,13 +11,20 @@ const newUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  const { currentUser } = req;
+  // const { currentUser } = req;
   const result = await userService.getUsers();
-  console.log(currentUser);
   res.status(200).json(result.message);
+};
+
+const getUserByID = async (req, res) => {
+  const { id } = req.params;
+  const result = await userService.getUserByID(id);
+  if (result.type) return res.status(mapHttpError(result.type)).json({ message: result.message });
+  return res.status(200).json(result.message);
 };
 
 module.exports = {
   newUser,
   getUsers,
+  getUserByID,
 };

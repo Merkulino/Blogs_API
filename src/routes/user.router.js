@@ -11,9 +11,15 @@ route.post(
 );
 
 route.get(
+  '/:id',
+  validateToken,
+  userController.getUserByID,
+);
+
+route.get(
   '/',
   validateToken,
   userController.getUsers,
-  );
+);
 
 module.exports = route;
