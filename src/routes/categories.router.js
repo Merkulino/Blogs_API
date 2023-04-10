@@ -4,6 +4,12 @@ const { validateToken, validateNameInput } = require('../middlewares/validateInp
 
 const route = express.Router();
 
+route.get(
+  '/', 
+  validateToken,
+  categoryController.getCategories,
+);
+
 route.post(
   '/', 
   validateToken,
