@@ -1,10 +1,12 @@
 const { verifyToken } = require('../auth/token');
-const { loginInputs, newUserInputs, validName } = require('./joi');
+const { loginInputs, newUserInputs, validName, newPostInputs } = require('./joi');
+
+const FIELDS_MISSING_STRING = { message: 'Some required fields are missing' }; // Extra: Retornar o erro especifico que vem do proprio Joi
 
 const validateLoginInput = (req, res, next) => {
   const data = req.body;
   const { error } = loginInputs(data);
-  if (error) return res.status(400).json({ message: 'Some required fields are missing' });
+  if (error) return res.status(400).json(FIELDS_MISSING_STRING);
   next();
 };
 
@@ -34,9 +36,17 @@ const validateNameInput = (req, res, next) => {
   next();
 };
 
+const validateNewPostInputs = (req, res, next) => {
+  const post = req.body;
+  const { error } = newPostInputs(post);
+  if (error) return res.status(400).json(FIELDS_MISSING_STRING);
+  next();
+};
+
 module.exports = {
   validateLoginInput,
   validateNewUserInputs,
   validateToken,
   validateNameInput,
+  validateNewPostInputs,
 };

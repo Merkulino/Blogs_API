@@ -14,8 +14,15 @@ const newUserInputs = (body) => Joi.object({
 
 const validName = (name) => Joi.string().required().label('name').validate(name);
 
+const newPostInputs = (body) => Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+  categoryIds: Joi.array().items(Joi.number()).required(),
+}).validate(body);
+
 module.exports = {
   loginInputs,
   newUserInputs,
   validName,
+  newPostInputs,
 };
