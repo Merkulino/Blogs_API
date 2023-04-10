@@ -1,5 +1,5 @@
 const { verifyToken } = require('../auth/token');
-const { loginInputs, newUserInputs } = require('./joi');
+const { loginInputs, newUserInputs, validName } = require('./joi');
 
 const validateLoginInput = (req, res, next) => {
   const data = req.body;
@@ -27,8 +27,16 @@ const validateToken = (req, res, next) => {
   next();
 };
 
+const validateNameInput = (req, res, next) => {
+  const { name } = req.body;
+  const { error } = validName(name);
+  if (error) return res.status(400).json({ message: error.message });
+  next();
+};
+
 module.exports = {
   validateLoginInput,
   validateNewUserInputs,
   validateToken,
+  validateNameInput,
 };

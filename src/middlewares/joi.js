@@ -12,7 +12,10 @@ const newUserInputs = (body) => Joi.object({
   image: Joi.string(),
 }).validate(body);
 
+const validName = (name) => Joi.string().required().label('name').validate(name);
+
 module.exports = {
   loginInputs,
   newUserInputs,
+  validName,
 };

@@ -1,9 +1,14 @@
 const express = require('express');
+const { categoryController } = require('../controllers');
+const { validateToken, validateNameInput } = require('../middlewares/validateInputs');
 
 const route = express.Router();
 
-route.get('/', (req, res) => {
-  res.status(200).json({ message: 'categories works!' });
-});
+route.post(
+  '/', 
+  validateToken,
+  validateNameInput,
+  categoryController.newCategory,
+);
 
 module.exports = route;
