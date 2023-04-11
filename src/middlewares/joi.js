@@ -20,9 +20,15 @@ const newPostInputs = (body) => Joi.object({
   categoryIds: Joi.array().items(Joi.number()).required(),
 }).validate(body);
 
+const postInputs = (body) => Joi.object({
+  title: Joi.string().required(),
+  content: Joi.string().required(),
+}).validate(body);
+
 module.exports = {
   loginInputs,
   newUserInputs,
   validName,
   newPostInputs,
+  postInputs,
 };

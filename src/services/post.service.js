@@ -32,8 +32,29 @@ const getPost = async (id) => {
   return { type: null, message: response };
 };
 
+const updatePost = async (postId, currentUserId, { title, content }) => {
+  const post = await getPost(postId);
+  if (post.type) return post;
+  const { dataValues: { userId } } = post.message;
+
+  if (userId !== currentUserId) return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+
+  const [id] = await BlogPost.update({ title, content }, { where: { id: postId } });
+  const { message } = await getPost(id);
+  
+  return { type: null, message };
+};
+
+const deletePost = async (postId, userId) => {
+  const response = await BlogPost.findByPk(id, INCLUDE_USER_AND_CATEGORIES);
+  if (response === null) return { type: 'NOT_FOUND', message: 'Post does not exist' };
+  return { type: null, message: response };
+};
+
 module.exports = {
   newPost,
   getAll,
   getPost,
+  updatePost,
+  deletePost,
 };
