@@ -35,7 +35,7 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   const { currentUser } = req;
   const { id } = req.params;
-  const { type, message } = await postService.deletePost(id, currentUser);
+  const { type, message } = await postService.deletePost(Number(id), currentUser);
   if (type) return res.status(mapHttpError(type)).json({ message });
   res.status(204).send();
 };

@@ -1,5 +1,7 @@
 const { BlogPost, PostCategory, User, Category } = require('../models');
-const { validExistCategoryIds } = require('./validations');
+const { validExistCategoryIds, 
+  // validPostOwner
+ } = require('./validations');
 
 const INCLUDE_USER_AND_CATEGORIES = { 
   include: [
@@ -32,12 +34,19 @@ const getPost = async (id) => {
   return { type: null, message: response };
 };
 
-const updatePost = async (postId, currentUserId, { title, content }) => {
+const validPostOwnerHERE = async (postId, currentUserId) => { // Essa função gera problema no arquivo validation
+  console.log(postId);
   const post = await getPost(postId);
   if (post.type) return post;
   const { dataValues: { userId } } = post.message;
-
+  
   if (userId !== currentUserId) return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
+  return { type: null };
+};
+
+const updatePost = async (postId, currentUserId, { title, content }) => {
+  const error = await validPostOwnerHERE(postId, currentUserId);
+  if (error.type) return error;
 
   const [id] = await BlogPost.update({ title, content }, { where: { id: postId } });
   const { message } = await getPost(id);
@@ -46,9 +55,13 @@ const updatePost = async (postId, currentUserId, { title, content }) => {
 };
 
 const deletePost = async (postId, userId) => {
-  const response = await BlogPost.findByPk(id, INCLUDE_USER_AND_CATEGORIES);
-  if (response === null) return { type: 'NOT_FOUND', message: 'Post does not exist' };
-  return { type: null, message: response };
+  const error = await validPostOwnerHERE(postId, userId);
+  if (error.type) return error;
+
+  await PostCategory.destroy({ where: { postId } });
+  await BlogPost.destroy({ where: { id: postId } });
+
+  return { type: null };
 };
 
 module.exports = {
