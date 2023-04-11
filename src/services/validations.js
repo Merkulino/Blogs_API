@@ -6,6 +6,12 @@ const validExistUser = async (email) => {
   return { type: null, message: 'Teste' };
 };
 
+// const validExistPost = async (email) => {
+//   const user = await User.findAll({ where: { email } });
+//   if (user.length > 0) return { type: 'CONFLICT', message: 'User already registered' };
+//   return { type: null, message: 'Teste' };
+// };
+
 const validExistCategoryIds = async (ids) => {
   const result = ids.map(async (currentId) => Category.findByPk(currentId));
   const dataValues = await Promise.all(result);

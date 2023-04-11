@@ -1,4 +1,4 @@
-const { BlogPost, PostCategory } = require('../models');
+const { BlogPost, PostCategory, User, Category } = require('../models');
 const { validExistCategoryIds } = require('./validations');
 
 const newPost = async ({ title, content, categoryIds }, userId) => { // Refatorar?
@@ -14,6 +14,22 @@ const newPost = async ({ title, content, categoryIds }, userId) => { // Refatora
   return { type: null, message: { ...dataValues, userId } };
 };
 
+const getAll = async () => {
+  const response = await BlogPost.findAll({ 
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', attributes: { exclude: ['PostCategory'] } }, // esse exclude n funciona
+    ],
+  });
+  return { type: null, message: response };
+};
+
+const getPost = async () => {
+  // const response = await BlogPost.findByPk(id);
+};
+
 module.exports = {
   newPost,
+  getAll,
+  getPost,
 };
