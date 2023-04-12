@@ -1,4 +1,4 @@
-const { BlogPost, PostCategory, User, Category } = require('../models');
+const { BlogPost, PostCategory, User, Category, Sequelize } = require('../models');
 const { validExistCategoryIds, 
   // validPostOwner
  } = require('./validations');
@@ -58,10 +58,28 @@ const deletePost = async (postId, userId) => {
   const error = await validPostOwnerHERE(postId, userId);
   if (error.type) return error;
 
-  // await PostCategory.destroy({ where: { postId } });
   await BlogPost.destroy({ where: { id: postId } });
 
   return { type: null };
+};
+
+const searchPost = async (search, userId) => {
+  if (!search || search === undefined) return { message: (await getAll()).message };
+
+  const searchMethod = { [Sequelize.Op.like]: `%${search}%` };
+
+  const post = await BlogPost.findAll({ 
+    ...INCLUDE_USER_AND_CATEGORIES,
+    where: {
+      [Sequelize.Op.or]: [
+        { title: searchMethod },
+        { content: searchMethod },
+      ],
+    },
+  }); 
+
+  if (post.length === 0) return { message: [] };
+  return { type: null, message: [{ ...post[0].dataValues, userId }] };
 };
 
 module.exports = {
@@ -70,4 +88,5 @@ module.exports = {
   getPost,
   updatePost,
   deletePost,
+  searchPost,
 };

@@ -19,6 +19,12 @@ route.get(
 ); 
 
 route.get(
+  '/search', 
+  validateToken,
+  postController.searchPost,
+); 
+
+route.get(
   '/:id', 
   validateToken,
   postController.getPost,
