@@ -22,4 +22,10 @@ route.get(
   userController.getUsers,
 );
 
+route.delete(
+  '/:me',
+  validateToken,
+  userController.deleteUser,
+);
+
 module.exports = route;

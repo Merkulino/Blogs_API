@@ -58,7 +58,7 @@ const deletePost = async (postId, userId) => {
   const error = await validPostOwnerHERE(postId, userId);
   if (error.type) return error;
 
-  await PostCategory.destroy({ where: { postId } });
+  // await PostCategory.destroy({ where: { postId } });
   await BlogPost.destroy({ where: { id: postId } });
 
   return { type: null };
