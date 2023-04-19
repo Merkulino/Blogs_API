@@ -47,6 +47,9 @@ Caso queira executar esse projeto em sua máquina utilizando o docker, você pod
  * No container de back-end, rode `npm run dev`
  * No container do banco de dados, rode `mysql -u root -p` utilizando a senha configurada nas variaveis de ambiente do docker-compose.yml, `password`
  * Pronto! Agora só executar endpoints com as requisições configuradas no arquivo `src/app.js`
+ * O comando `npm run dev` já cria as tabelas automaticamente, mas caso queira criar as tabelas independente de iniciar a aplicação, rode `npm run prestart`
+ * Para popular as tabelas rode `npm run seed`
+ * Para deletar as tabelas `npm run drop`
 
 ## Autor
 
