@@ -2,6 +2,8 @@ const { User } = require('../models');
 const { validExistUser } = require('./validations');
 const { generateToken } = require('../auth/token');
 
+const NOT_FOUND_OBJ = { type: 'NOT_FOUND', message: 'User does not exist' };
+
 const newUser = async ({ displayName, email, password, image }) => {
   const error = await validExistUser(email);
   if (error.type) return error;
@@ -21,14 +23,14 @@ const getUsers = async () => {
 const getUserByID = async (id) => {
   const user = await User.findByPk(id, { attributes: { exclude: ['password'] } });
   
-  if (user === null) return { type: 'NOT_FOUND', message: 'User does not exist' };
+  if (user === null) return NOT_FOUND_OBJ;
   return { type: null, message: user };
 };
 
 const deleteUser = async (id) => {
   const user = await User.destroy({ where: { id } });
   
-  if (user === null) return { type: 'NOT_FOUND', message: 'User does not exist' };
+  if (user === null) return NOT_FOUND_OBJ;
 
   return { type: null };
 };

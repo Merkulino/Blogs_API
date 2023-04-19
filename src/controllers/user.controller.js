@@ -11,7 +11,6 @@ const newUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  // const { currentUser } = req;
   const result = await userService.getUsers();
   res.status(200).json(result.message);
 };
