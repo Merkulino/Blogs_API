@@ -9,5 +9,3 @@ COPY .eslintignore .
 COPY .eslintrc.json .
 COPY .sequelizerc .
 COPY jest.config.js .
-RUN npm run prestart
-RUN npm run seed
