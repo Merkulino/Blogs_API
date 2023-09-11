@@ -32,7 +32,7 @@ Para criação, normalização e conexão com banco de dados MySQL, foi utilizad
  - API Rest
  - ORM: Sequelize
  - JWT (Json Web Token)
- - MSC (Model, Service, Controller)
+ - Arquitetura em Camada
  - CRUD 
 
 Todos os arquivos desenvolvidos por mim estão dentro da pasta `src`, os restantes, são arquivos de configuração ou arquivos desenvolvidos pela Trybe
